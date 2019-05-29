@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+    <title>Catalog App</title>
+</head>
+<body>
+
+<header class="container">
+    <div class="htitle">
+        <h1>Catalog App</h1>
+    </div>
+
+    {% if 'username' in session %}
+        <a class="button" href="{{ url_for('gdisconnect') }}">logout</a>
+    {% else %}
+        <a class="button" href="{{ url_for('showLogin') }}">login</a>
+    {% endif %}
+
+</header>

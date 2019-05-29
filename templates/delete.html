@@ -1,0 +1,14 @@
+{% include "header.html" %}
+<div class="container">
+    <main class="white">
+        <h2 class="ltitle">Delete Item</h2>
+        <p>Are you sure you want to delete <strong>{{ item.name }}</strong> ?</p>
+        <form action="{{ url_for('deleteItem',item_id=item.id) }}" method="post">
+            <input type="submit" value="Submit"> |
+            <a href="{{ url_for('showDescription', category_id=item.category_id, item_id=item.id) }}">Cancel</a>
+        </form>
+
+    </main>
+</div>
+</body>
+</html>

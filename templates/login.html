@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
+    <script>
+        function start() {
+            gapi.load('auth2', function () {
+                auth2 = gapi.auth2.init({
+                    client_id: "{{ client_id }}",
+                });
+            });
+        }
+    </script>
+
+    <title>Catalog App Login</title>
+</head>
+<body>
+
+
+<header class="container">
+    <div class="htitle">
+        <h1>Catalog App</h1>
+    </div>
+    <a class="button" href="#">login</a>
+
+</header>
+<div class="container">
+    <div class="login">
+        <div id="result"><h4>Sign in Using Google</h4></div>
+        <button id="signinButton">Sign in with Google</button>
+
+    </div>
+    <script>
+        $('#signinButton').click(function () {
+            auth2.grantOfflineAccess().then(signInCallback);
+        });
+    </script>
+
+
+    <script>
+        function signInCallback(authResult) {
+            if (authResult['code']) {
+                $('#signinButton').attr('style', 'display: none');
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/gconnect?state={{STATE}}',
+                headers: {'X-Requested-With': 'XMLHttpRequest'},
+                processData: false,
+                contentType: 'application/octet-stream; charset=utf-8',
+                data: authResult['code'],
+                success: function (result) {
+                    if (result) {
+                        $('#result').html('Login Successful!<br>' + result + '<br> Redirecting...')
+                        setTimeout(function () {
+                            window.location.href = "{{ url_for('showCatalog') }}";
+                        }, 2000)
+                    } else if (authResult['error']) {
+                        console.log('THere was an error' + authResult['error']);
+                    } else {
+                        $('#result').html('Failed to make a srsver-side call.' +
+                            'check your configuration and console.');
+                    }
+                }
+            });
+        }
+    </script>
+</div>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{% include "header.html" %}
+<div class="container">
+    <nav class="white">
+
+        <h2 class="ltitle">Categories</h2>
+        <ul>
+            {% for i in categories %}
+                <li><a href="{{ url_for('showItems', category_id = i.id) }}">{{ i.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </nav>
+
+
+    <main class="items white">
+        <h2 class="ltitle">Items</h2>
+        <ul>
+            {% for i in items %}
+                <li>
+                    <a href="{{ url_for('showDescription', category_id=i.category_id, item_id=i.id ) }}">{{ i.name }}</a><span
+                        class="cat"> ({{ categories[(i.category_id)-1].name}})</span></li>
+            {% endfor %}
+        </ul>
+    </main>
+</div>
+</body>
+</html>
